@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/styles.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+</head>
+<body>
+    <section>
+        <article>
+            This is section 1
+        </article>
+        <img />
+
+        <div x-data="{ todos: [] }" x-init="todos = await getTodos()">
+            <template x-for="todo in todos">
+                <span x-text="todo.Title"></span>
+                <span x-text="todo.State"></span>
+            </div>
+        </template>
+
+        <div x-data="{
+            title: '',
+            status: 'to do',
+        }">
+            <input x-model="title">
+            <input x-model="status">
+
+            <button @click="(e) => $store.todos.add({title, status})">Add</button>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+         Alpine.store('todos', {
+         items: [{
+             id: 1,
+             title: 'item1',
+             status: 'done'
+         },
+         {
+             id: 2,
+             title: 'item2',
+             status: 'pending'
+         },
+         {
+             id: 3,
+             title: 'item3',
+             status: 'deleted'
+         }],
+
+         add(item) {
+             this.items.push({...item, id: 4});
+         },
+
+         get getItems() {
+             return this.items;
+         },
+
+         get getLastItem() {
+            return this.items[this.items.length - 1];
+         },
+
+         search(id) {
+             return this.items.filter(item => item.id === id);
+         }
+        })
+        })
+
+ function getSomething() {
+    return {
+        template: `
+            <div style="margin: 10px">
+                <h1>hello</h1>
+                <p>world</p>
+                <input placeholder="helloworld">
+                </div>
+        `,
+        id: 1
+    }
+ }
+
+ async function getTodos() {
+    const res = await fetch("http://localhost:4444/todos", {
+        headers: {
+            "Access-Control-Allow-Origin": '*'
+        }
+    });
+    const data = await res.json();
+    return data;
+ }
+ </script>
+
+</body>
+</html>

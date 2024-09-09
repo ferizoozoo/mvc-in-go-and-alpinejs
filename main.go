@@ -16,12 +16,15 @@ const keyServerAddr = "serverAddr"
 func main() {
 	mux := http.NewServeMux()
 	internal.RegisterHandlers(todos.TodosRoutes, mux)
+	wrappedMux := internal.NewMiddlewareRegistrar().
+		Add(todos.TodosMiddleware).
+		Register(mux)
 
 	ctx := context.Background()
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", SERVER_PORT),
-		Handler: mux,
+		Handler: wrappedMux,
 		BaseContext: func(l net.Listener) context.Context {
 			ctx = context.WithValue(ctx, keyServerAddr, l.Addr().String())
 			return ctx

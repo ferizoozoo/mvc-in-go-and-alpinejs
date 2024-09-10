@@ -22,6 +22,8 @@ func main() {
 
 	ctx := context.Background()
 
+	internal.LoadEnvironmentVariables()
+
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", SERVER_PORT),
 		Handler: wrappedMux,

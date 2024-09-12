@@ -23,6 +23,7 @@ func main() {
 	ctx := context.Background()
 
 	internal.LoadEnvironmentVariables()
+	//internal.GenerateSwaggerFiles()
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", SERVER_PORT),

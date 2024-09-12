@@ -24,6 +24,7 @@ func main() {
 
 	internal.LoadEnvironmentVariables()
 	//internal.GenerateSwaggerFiles()
+	internal.ServeStaticFiles(mux)
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", SERVER_PORT),

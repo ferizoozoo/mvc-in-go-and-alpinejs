@@ -1,8 +1,9 @@
 package todos
 
 import (
-	"alpine-golang-test/backend/internal"
 	"net/http"
+
+	"github.com/ferizoozoo/sake/internal"
 )
 
 var TodosRoutes = internal.Routes{

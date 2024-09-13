@@ -1,13 +1,14 @@
 package main
 
 import (
-	"alpine-golang-test/backend/internal"
-	"alpine-golang-test/backend/todos"
 	"context"
 	"errors"
 	"fmt"
 	"net"
 	"net/http"
+
+	"github.com/ferizoozoo/sake/internal"
+	"github.com/ferizoozoo/sake/todos"
 )
 
 const SERVER_PORT = 4444
@@ -15,16 +16,20 @@ const keyServerAddr = "serverAddr"
 
 func main() {
 	mux := http.NewServeMux()
+
+	// Controllers
 	internal.RegisterHandlers(todos.TodosRoutes, mux)
+
+	// Middlewares
 	wrappedMux := internal.NewMiddlewareRegistrar().
 		Add(todos.TodosMiddleware).
 		Register(mux)
 
-	ctx := context.Background()
-
 	internal.LoadEnvironmentVariables()
 	//internal.GenerateSwaggerFiles()
 	internal.ServeStaticFiles(mux)
+
+	ctx := context.Background()
 
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", SERVER_PORT),

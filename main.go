@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/ferizoozoo/sake/cache"
 	"github.com/ferizoozoo/sake/internal"
 	"github.com/ferizoozoo/sake/todos"
 )
@@ -28,6 +29,10 @@ func main() {
 	internal.LoadEnvironmentVariables()
 	//internal.GenerateSwaggerFiles()
 	internal.ServeStaticFiles(mux)
+	internal.GetCache().SetProvider(cache.NewRedisCacheProvider(internal.CacheOptions{
+		Address:  "localhost:6379",
+		Password: "enter your cache password here",
+	}))
 
 	ctx := context.Background()
 

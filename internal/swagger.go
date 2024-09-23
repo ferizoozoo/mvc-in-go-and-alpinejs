@@ -1,16 +1,17 @@
 package internal
 
-import (
-	"fmt"
-	"os/exec"
-)
+import "net/http"
 
-// NOTE: This is not complete and should be tested and developed later!
-const command = "swag init"
+type SwaggerConfig struct {
+	Host string
+}
 
-func GenerateSwaggerFiles() {
-	_, err := exec.Command(command).Output()
-	if err != nil {
-		fmt.Println("Error generating swagger files.\n", err)
+func NewSwaggerConfig(host string) *SwaggerConfig {
+	return &SwaggerConfig{
+		Host: host,
 	}
+}
+
+type SwaggerHandler interface {
+	Register(mux *http.ServeMux)
 }
